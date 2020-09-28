@@ -111,6 +111,8 @@ module Autoport
       ])
 
       board = first_of_props([
+        "ro.build.product",
+        "ro.product.odm.device",
         "ro.product.vendor.name",
         "ro.product.name",
         "ro.product.board",
