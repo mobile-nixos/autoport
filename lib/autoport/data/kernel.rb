@@ -49,5 +49,20 @@ module Autoport::Data
         end
       end
     end
+
+    def config(name)
+      value = File.read(config_file).lines.grep(/#{name}[ =]/).first
+      value = value.strip if value
+      case value
+      when nil
+        nil
+      when /is not set/
+        "n"
+      when /=/
+        value.split("=", 2).last
+      else
+        raise "Unexpected format for kernel config #{name}...\n->#{value}"
+      end
+    end
   end
 end
