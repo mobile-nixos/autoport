@@ -33,11 +33,24 @@ module Autoport
     end
 
     def usb_mode()
-      if File.read(@bootimg.kernel.config_file).lines.grep(/CONFIG_USB_G_ANDROID=y/).first
+      if @bootimg.kernel.config("CONFIG_USB_G_ANDROID") == "y"
         "android_usb"
       else
         "gadgetfs"
       end
+    end
+
+    def rndis_gadget()
+      @rndis_gadget ||=
+        if @bootimg.kernel.config("CONFIG_USB_F_RMNET_BAM") == "y"
+          "rndis_bam.rndis"
+        elsif @bootimg.kernel.config("CONFIG_USB_F_GSI") == "y"
+          "gsi.rndis"
+        else
+          nil
+        end
+
+      @rndis_gadget
     end
 
     def get_contents()
@@ -128,12 +141,23 @@ EOS
 
 #{
   if usb_mode == "gadgetfs"
+    if rndis_gadget
 <<EOS
   mobile.usb.gadgetfs.functions = {
-    /* The following is a common valid value for rndis. Uncomment it and try it out. */
+    /* This rndis gadget has been auto-detected. */
+    rndis = "#{rndis_gadget}";
+  };
+EOS
+    else
+<<EOS
+  mobile.usb.gadgetfs.functions = {
+    /* No known rndis gadget could be conclusively found.
+     * The following is a common valid value for rndis. Uncomment it and try it out.
+     */
     #rndis = "gsi.rndis";
   };
 EOS
+    end
   else "" end
   }
 }
