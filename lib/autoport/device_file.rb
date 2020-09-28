@@ -4,9 +4,19 @@ module Autoport
     TODO = "TODO!"
 
     def initialize(
-      bootimg: nil
+      bootimg:,
+      full_codename:,
+      soc:,
+      manufacturer:,
+      model:,
+      has_vendor_partition:
     )
       @bootimg = bootimg
+      @full_codename = full_codename
+      @soc = soc
+      @manufacturer = manufacturer
+      @model = model
+      @has_vendor_partition = has_vendor_partition
     end
 
     def hex(num)
@@ -38,14 +48,14 @@ module Autoport
  * **Do not** open a Pull Request without having verified the port works.
  */
 {
-  mobile.device.name = "#{TODO}";
+  mobile.device.name = "#{@full_codename}";
   mobile.device.identity = {
-    name = "#{TODO}";
-    manufacturer = "#{TODO}";
+    name = "#{@model}";
+    manufacturer = "#{@manufacturer}";
   };
 
   mobile.hardware = {
-    soc = "#{TODO}";
+    soc = "#{@soc}";
     ram = 1024 * 0/* (in MB) To be filled by the user */;
     screen = {
       width = 0/* To be filled by the user */; height = 0/* To be filled by the user */;
@@ -57,8 +67,9 @@ module Autoport
   };
 
   mobile.system.android = {
+    /* To be filled by the user; couldn't detect for A/B scheme or not */
     # This device has an A/B partition scheme
-    ab_partitions = #{TODO};
+    ab_partitions = false/* true / false */;
 
     bootimg.flash = {
       offset_base = "#{hex(@bootimg.base)}";
@@ -70,9 +81,14 @@ module Autoport
     };
   };
 
-  # #{TODO}
-  # (To be discovered)
+#{
+  if @has_vendor_partition
+<<EOS
+  /* If your device has A/B partitions, the partition label is "vendor_a". */
   mobile.system.vendor.partition = "/dev/disk/by-partlabel/vendor_a";
+EOS
+  else "" end
+}
 
   boot.kernelParams = [
     # Extracted from an Android boot image

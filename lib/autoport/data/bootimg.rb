@@ -55,8 +55,8 @@ module Autoport::Data
           when /Linux kernel ARM64 boot executable Image/
             Autoport.run("cat < #{filename} > kernel")
           when /ARM OpenFirmware FORTH Dictionary/
-            Autoport.run("binwalk", "-e", "#{filename}")
-            Autoport.run("mv _#{filename}.extracted/* kernel")
+            Autoport.run("binwalk", "-e", "#{filename}", "-C", "_kernel.extracted")
+            FileUtils.mv(Dir.glob("_kernel.extracted/*/*").first, "kernel")
           else
             STDERR.puts "ERROR: Don't know how to unpack file identified as 'octet stream'..."
             puts " -> #{detailed_ft}"

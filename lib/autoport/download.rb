@@ -8,6 +8,7 @@ module Autoport::Download
   def blob(path, out)
     Autoport.run(
       "curl",
+      "--fail",
       "-o", out,
       head_blob_url(path)
     )

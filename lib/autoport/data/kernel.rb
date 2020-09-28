@@ -21,16 +21,19 @@ module Autoport::Data
       when /ARM64/
         "aarch64"
       else
-        raise "Architecture discovery failed.\n -> '#{info}'"
+        STDERR.puts "WARNING: Architecture discovery failed.\n -> '#{info}'\n Assuming armv7l"
+        "armv7l"
       end
     end
 
     def config_file()
       return @config_file if @config_file
 
+      FileUtils.rm_rf("_#{@path}.extracted")
       Autoport.run("binwalk", "-e", @path)
       FileUtils.mkdir_p("#{@path}.extracted")
       Dir.chdir("_#{@path}.extracted") do
+        Autoport.run("file *")
         config_file = `file *`.lines.select do |line|
           line.match(/Linux make config build file/)
         end.first

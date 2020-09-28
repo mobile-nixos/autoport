@@ -15,9 +15,11 @@ pkgs.mkShell {
 
     binutils
     curl
-    lz4
     file
+    gzip
+    lz4
     mkbootimg
     python3Packages.binwalk
+    zlib
   ];
 }
