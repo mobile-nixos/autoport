@@ -125,6 +125,10 @@ module Autoport
         "ro.product.manufacturer",
       ]).downcase.gsub(/[^a-z]/, "_")
 
+      ab_update = first_of_props([
+        "ro.build.ab_update"
+      ]) == "true"
+
       # Finally, generate a device config file!
       device_file = DeviceFile.new(
         bootimg: bootimg,
@@ -133,6 +137,7 @@ module Autoport
         manufacturer: manufacturer,
         model: model,
         has_vendor_partition: !!@props.get_prop("ro.product.vendor.device"),
+        ab_update: ab_update,
       )
 
       File.write(out_dir("oem_props.json"), JSON.pretty_generate(@props.all))

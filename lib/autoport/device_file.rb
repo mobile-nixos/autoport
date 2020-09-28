@@ -9,6 +9,7 @@ module Autoport
       soc:,
       manufacturer:,
       model:,
+      ab_update:,
       has_vendor_partition:
     )
       @bootimg = bootimg
@@ -18,6 +19,7 @@ module Autoport
       @model = model
       @has_vendor_partition = has_vendor_partition
       @likely_ab = bootimg.kernel.knows_skip_initramfs?
+      @ab_update = ab_update
     end
 
     def hex(num)
@@ -85,7 +87,7 @@ module Autoport
      * Verify your device "has slots" with fastboot.
      * The most likely value has been selected.
      */
-    ab_partitions = #{if @likely_ab then "true" else "false" end};
+    ab_partitions = #{if @ab_update then "true" else "false" end};
 #{
 if @bootimg.kernel.knows_skip_initramfs?
 <<EOS
@@ -115,11 +117,7 @@ else "" end
 #{
   if @has_vendor_partition
 <<EOS
-  /* If your device has A/B partitions, the partition label is "vendor_a".
-   * Otherwise it's "vendor".
-   * The most likely value has been selected.
-   */
-  mobile.system.vendor.partition = "/dev/disk/by-partlabel/#{if @likely_ab then "vendor_a" else "vendor" end}";
+  mobile.system.vendor.partition = "/dev/disk/by-partlabel/#{if @ab_update then "vendor_a" else "vendor" end}";
 EOS
   else "" end
 }
