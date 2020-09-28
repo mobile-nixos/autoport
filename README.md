@@ -77,3 +77,10 @@ the device is using an A/B partition scheme.
 
 The "best" way to do this would be to have the detection be done *online*
 with the device in fastboot mode.
+
+### Bad detection of "boot as recovery"
+
+It happens that kernels may know about "skip_initramfs" while not actually
+being in use by the device (e.g. motorola-addison).
+
+This will need "online" detection, most likely.
