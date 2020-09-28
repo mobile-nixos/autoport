@@ -5,6 +5,10 @@ module Autoport::Data
       @path = path
     end
 
+    def knows_skip_initramfs?()
+      `strings #{@path.shellescape}`.lines.grep(/skip_initramfs/).length > 0
+    end
+
     def version_string()
       @version_string ||= `strings #{@path.shellescape}`
         .lines.grep(/Linux version [0-9]/).uniq.first

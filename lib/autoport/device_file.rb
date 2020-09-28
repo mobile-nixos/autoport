@@ -17,6 +17,7 @@ module Autoport
       @manufacturer = manufacturer
       @model = model
       @has_vendor_partition = has_vendor_partition
+      @likely_ab = bootimg.kernel.knows_skip_initramfs?
     end
 
     def hex(num)
@@ -67,9 +68,25 @@ module Autoport
   };
 
   mobile.system.android = {
-    /* To be filled by the user; couldn't detect for A/B scheme or not */
-    # This device has an A/B partition scheme
-    ab_partitions = false/* true / false */;
+    /* The detection for ab_partitions is not good.
+     * Verify your device "has slots" with fastboot.
+     * The most likely value has been selected.
+     */
+    ab_partitions = #{if @likely_ab then "true" else "false" end};
+#{
+if @bootimg.kernel.knows_skip_initramfs?
+<<EOS
+    /* Use of `skip_initramfs` has been detected.
+     * - If your device **does not** use the A/B partition scheme (does not
+     *   have slots) the following values should be set to true.
+     * - Remove the following lines from this file if your device **does use**
+     *   the A/B partition scheme.
+     */
+    # boot_as_recovery = true;
+    # has_recovery_partition = true;
+EOS
+else "" end
+}
 
     bootimg.flash = {
       offset_base = "#{hex(@bootimg.base)}";
@@ -84,8 +101,11 @@ module Autoport
 #{
   if @has_vendor_partition
 <<EOS
-  /* If your device has A/B partitions, the partition label is "vendor_a". */
-  mobile.system.vendor.partition = "/dev/disk/by-partlabel/vendor_a";
+  /* If your device has A/B partitions, the partition label is "vendor_a".
+   * Otherwise it's "vendor".
+   * The most likely value has been selected.
+   */
+  mobile.system.vendor.partition = "/dev/disk/by-partlabel/#{if @likely_ab then "vendor_a" else "vendor" end}";
 EOS
   else "" end
 }
