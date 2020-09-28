@@ -16,6 +16,36 @@ amount of intel gathering.
 
 * * *
 
+## Usage
+
+```
+$ nix-shell
+[nix-shell] $ ./autoport.rb $OEM $DEVICE
+```
+
+Where OEM and DEVICE represent values found (for the moment) at the *Android
+Dumps* project.
+
+ * https://git.rip/dumps/
+
+The output of this is a directory in your `$PWD` named `$OEM-$DEVICE` which
+holds the skeleton generated files.
+
+For the time being, it does **not** generate a skeleton for the kernel builder
+derivation, as there is no "template" per se to use. Start from a
+`kernel/default.nix` from another device with a similar kernel version or a
+similar SoC.
+
+I would heavily suggest making the first commit in your commit series the
+unmodified output of this tool, as a way to track required changes for this
+output to be useful.
+
+Be mindful and read the `/**/` comments! All of them are related to the
+generation process! You will be asked to fill in some values that couldn't be
+detected for the time being.
+
+* * *
+
 ## Current design decisions
 
 This current early version of the tool assumes the end-user will want to use
