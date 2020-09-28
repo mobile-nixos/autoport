@@ -3,7 +3,7 @@ Mobile NixOS Autoporter
 
 * * *
 
-**⚠️  This tool is work-in-process.**
+**⚠️  This tool is work-in-progress.**
 
 * * *
 
