@@ -100,7 +100,11 @@ module Autoport
       ])
 
       model = first_of_props([
+        # Vendor-preferred names
+        "ro.semc.product.name", # Sony
         "ro.display.series",
+
+        # Generic fields
         "ro.product.vendor.model",
         "ro.product.system.model",
         "ro.product.model",
