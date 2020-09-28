@@ -9,6 +9,7 @@ module Autoport
       soc:,
       manufacturer:,
       model:,
+      system_root_image:,
       ab_update:,
       has_vendor_partition:
     )
@@ -18,7 +19,7 @@ module Autoport
       @manufacturer = manufacturer
       @model = model
       @has_vendor_partition = has_vendor_partition
-      @likely_ab = bootimg.kernel.knows_skip_initramfs?
+      @system_root_image = system_root_image
       @ab_update = ab_update
     end
 
@@ -83,27 +84,25 @@ module Autoport
   };
 
   mobile.system.android = {
-    /* The detection for ab_partitions is really not great.
-     * Verify your device "has slots" with fastboot.
-     * The most likely value has been selected.
-     */
-    ab_partitions = #{if @ab_update then "true" else "false" end};
 #{
-if @bootimg.kernel.knows_skip_initramfs?
+if @ab_update
+  # This applies to any device with A/B (e.g. walleye)
 <<EOS
-    /* Your kernel knows about `skip_initramfs`.
-     * - Remove the following lines from this file if your device **does use**
-     *   the A/B partition scheme.
-     * - If your device **does not** use the A/B partition scheme (does not
-     *   have slots) the following values should be set to true if the
-     *   bootloader adds `skip_initramfs` to the kernel command line options.
-     */
-    # boot_as_recovery = true;
-    # has_recovery_partition = true;
+    # This device has an A/B partition scheme.
+    ab_partitions = true;
+EOS
+elsif @system_root_image
+  # This applies to `xiaomi-lavender`
+<<EOS
+    # This device adds skip_initramfs to cmdline for normal boots
+    boot_as_recovery = true;
+
+    # Though this device has "boot_as_recovery", it still has a classic
+    # recovery partition for recovery.
+    has_recovery_partition = true;
 EOS
 else "" end
 }
-
     bootimg.flash = {
       offset_base = "#{hex(@bootimg.base)}";
       offset_kernel = "#{hex(@bootimg.kernel_offset)}";

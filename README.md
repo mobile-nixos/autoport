@@ -94,12 +94,3 @@ from an image they choose.
 
 Such images could be a TWRP-like recovery, a LineageOS-like custom rom, or
 simply a system image they chose.
-
-## Missing data points
-
-### Bad detection of "boot as recovery"
-
-It happens that kernels may know about "skip_initramfs" while not actually
-being in use by the device (e.g. motorola-addison).
-
-This will need "online" detection, most likely.

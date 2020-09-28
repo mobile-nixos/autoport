@@ -129,6 +129,10 @@ module Autoport
         "ro.build.ab_update"
       ]) == "true"
 
+      system_root_image = first_of_props([
+        "ro.build.system_root_image"
+      ]) == "true"
+
       # Finally, generate a device config file!
       device_file = DeviceFile.new(
         bootimg: bootimg,
@@ -137,6 +141,7 @@ module Autoport
         manufacturer: manufacturer,
         model: model,
         has_vendor_partition: !!@props.get_prop("ro.product.vendor.device"),
+        system_root_image: system_root_image,
         ab_update: ab_update,
       )
 
