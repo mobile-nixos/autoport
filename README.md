@@ -44,6 +44,23 @@ Be mindful and read the `/**/` comments! All of them are related to the
 generation process! You will be asked to fill in some values that couldn't be
 detected for the time being.
 
+### A/B partition scheme
+
+To verify, connect your device in fastboot mode to your computer.
+
+```
+fastboot getvar all 2>&1 | grep has-slot
+(bootloader) has-slot:modem:yes
+(bootloader) has-slot:system:yes
+(bootloader) has-slot:boot:yes
+```
+
+If it has at least the `boot` slot, it is considered as using the  A/B
+partition scheme.
+
+It is **highly** unlikely it uses a discrete recovery partition if it uses the
+A/B scheme for the boot image.
+
 * * *
 
 ## Current design decisions
