@@ -67,3 +67,13 @@ from an image they choose.
 
 Such images could be a TWRP-like recovery, a LineageOS-like custom rom, or
 simply a system image they chose.
+
+## Missing data points
+
+### A/B partitions
+
+From the unique datasource implemented, there is no way to detect whether
+the device is using an A/B partition scheme.
+
+The "best" way to do this would be to have the detection be done *online*
+with the device in fastboot mode.
