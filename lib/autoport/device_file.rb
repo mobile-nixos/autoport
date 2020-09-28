@@ -68,7 +68,7 @@ module Autoport
   };
 
   mobile.system.android = {
-    /* The detection for ab_partitions is not good.
+    /* The detection for ab_partitions is really not great.
      * Verify your device "has slots" with fastboot.
      * The most likely value has been selected.
      */
@@ -76,11 +76,12 @@ module Autoport
 #{
 if @bootimg.kernel.knows_skip_initramfs?
 <<EOS
-    /* Use of `skip_initramfs` has been detected.
-     * - If your device **does not** use the A/B partition scheme (does not
-     *   have slots) the following values should be set to true.
+    /* Your kernel knows about `skip_initramfs`.
      * - Remove the following lines from this file if your device **does use**
      *   the A/B partition scheme.
+     * - If your device **does not** use the A/B partition scheme (does not
+     *   have slots) the following values should be set to true if the
+     *   bootloader adds `skip_initramfs` to the kernel command line options.
      */
     # boot_as_recovery = true;
     # has_recovery_partition = true;
