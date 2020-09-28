@@ -103,6 +103,7 @@ module Autoport
         # Vendor-preferred names
         "ro.semc.product.name", # Sony
         "ro.display.series",
+        "ro.product.display", # Motorola
 
         # Generic fields
         "ro.product.vendor.model",
