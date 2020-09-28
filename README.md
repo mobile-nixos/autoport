@@ -61,6 +61,16 @@ partition scheme.
 It is **highly** unlikely it uses a discrete recovery partition if it uses the
 A/B scheme for the boot image.
 
+### Device name
+
+Be mindful about the device name!
+
+It can happen that the name detected differs from the name of the data source
+used (Android Dumps).
+
+It is likely that the detected name (`mobile.device.name`) is the preferred
+name.
+
 * * *
 
 ## Current design decisions
