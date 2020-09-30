@@ -27,6 +27,13 @@ module Autoport::Data
           # Then split on first =
           line.split("=", 2)
         end
+          .select do |pair|
+            unless pair.length == 2
+              STDERR.puts "Warning: props line with only one element (#{pair.first}) skipped."
+            else
+              true
+            end
+          end
           .to_h  # convert to Hash
     end
 
