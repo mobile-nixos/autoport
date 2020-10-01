@@ -36,7 +36,9 @@ module Autoport
     end
 
     def usb_mode()
-      if @bootimg.kernel.config("CONFIG_USB_G_ANDROID") == "y"
+      if @bootimg.kernel.config("CONFIG_USB_G_ANDROID").nil?
+        nil
+      elsif @bootimg.kernel.config("CONFIG_USB_G_ANDROID") == "y"
         "android_usb"
       else
         "gadgetfs"
@@ -128,7 +130,21 @@ EOS
 
   mobile.system.type = "android";
 
+#{
+  if usb_mode
+<<EOS
   mobile.usb.mode = "#{usb_mode}";
+EOS
+  else
+<<EOS
+  /* The usb mode could not be detected.
+   * Assuming this is an older device, android_usb should be used.
+   * For a newer device, gadgetfs is to be used.
+   */
+  mobile.usb.mode = null;
+EOS
+  end
+}
 
   /* To be changed by the author, though those may or may work with any device. */
   # Google
