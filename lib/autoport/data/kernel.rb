@@ -45,12 +45,14 @@ module Autoport::Data
         if config_file
           @config_file = File.join(Dir.pwd, config_file.split(":").first)
         else
+          STDERR.puts "Warning: No configuration file could be extracted from this kernel."
           nil
         end
       end
     end
 
     def config(name)
+      return nil unless config_file
       value = File.read(config_file).lines.grep(/#{name}[ =]/).first
       value = value.strip if value
       case value
