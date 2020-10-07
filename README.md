@@ -18,9 +18,25 @@ amount of intel gathering.
 
 ## Usage
 
+With the latest released version, in a checkout of Mobile NixOS:
+
 ```
+$ pwd
+.../Projects/mobile-nixos
+
 $ nix-shell
+ [...]
+
+[nix-shell] $ cd devices
 [nix-shell] $ ./autoport.rb $OEM $DEVICE
+ [...]
+
+[nix-shell] $ ls -l $OEM-$DEVICE
+drwxr-xr-x 2 samuel users  4096 Sep 29 12:34 kernel
+-rw-r--r-- 1 samuel users  1474 Sep 29 12:35 default.nix
+-rw-r--r-- 1 samuel users   209 Sep 29 12:34 misc.json
+-rw-r--r-- 1 samuel users 13692 Sep 29 12:34 oem_props.json
+
 ```
 
 Where OEM and DEVICE represent values found (for the moment) at the *Android
