@@ -82,7 +82,7 @@ module Autoport
   };
 
   mobile.boot.stage-1 = {
-    kernel.package = pkgs.callPackage ./kernel { kernelPatches = pkgs.defaultKernelPatches; };
+    kernel.package = pkgs.callPackage ./kernel { };
   };
 
   mobile.system.android = {
