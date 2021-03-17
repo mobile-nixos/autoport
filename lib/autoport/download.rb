@@ -16,6 +16,6 @@ module Autoport::Download
 
   def head_blob_url(path)
     prefix = "#{Autoport.oem}/#{Autoport.device}"
-    "https://git.rip/dumps/#{prefix}/-/raw/HEAD/#{path}?inline=false"
+    "https://dumps.tadiphone.dev/dumps/#{prefix}/-/raw/HEAD/#{path}?inline=false"
   end
 end
