@@ -159,6 +159,7 @@ EOS
     if rndis_gadget
 <<EOS
   mobile.usb.gadgetfs.functions = {
+    adb = "ffs.adb";
     /* This rndis gadget has been auto-detected. */
     rndis = "#{rndis_gadget}";
   };
