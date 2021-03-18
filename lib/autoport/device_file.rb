@@ -36,12 +36,11 @@ module Autoport
     end
 
     def usb_mode()
-      if @bootimg.kernel.config("CONFIG_USB_G_ANDROID").nil?
-        nil
+      if @bootimg.kernel.config("CONFIG_USB_CONFIGFS") == "y"
+        "gadgetfs"
       elsif @bootimg.kernel.config("CONFIG_USB_G_ANDROID") == "y"
         "android_usb"
       else
-        "gadgetfs"
       end
     end
 
