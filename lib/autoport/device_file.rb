@@ -5,6 +5,7 @@ module Autoport
 
     def initialize(
       bootimg:,
+      device_name:,
       full_codename:,
       soc:,
       manufacturer:,
@@ -14,6 +15,7 @@ module Autoport
       has_vendor_partition:
     )
       @bootimg = bootimg
+      @device_name = device_name
       @full_codename = full_codename
       @soc = soc
       @manufacturer = manufacturer
@@ -84,6 +86,7 @@ module Autoport
     kernel.package = pkgs.callPackage ./kernel { };
   };
 
+  mobile.system.android.device_name = "#{@device_name}";
   mobile.system.android = {
 #{
 if @ab_update

@@ -134,6 +134,11 @@ module Autoport
         "ro.build.system_root_image"
       ]) == "true"
 
+      device_name = first_of_props([
+        "ro.build.product",
+        "ro.product.device",
+      ])
+
       # Finally, generate a device config file!
       device_file = DeviceFile.new(
         bootimg: bootimg,
@@ -144,6 +149,7 @@ module Autoport
         has_vendor_partition: !!@props.get_prop("ro.product.vendor.device"),
         system_root_image: system_root_image,
         ab_update: ab_update,
+        device_name: device_name,
       )
 
       File.write(out_dir("oem_props.json"), JSON.pretty_generate(@props.all))
