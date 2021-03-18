@@ -42,7 +42,7 @@ drwxr-xr-x 2 samuel users  4096 Sep 29 12:34 kernel
 Where OEM and DEVICE represent values found (for the moment) at the *Android
 Dumps* project.
 
- * https://git.rip/dumps/
+ * https://dumps.tadiphone.dev/dumps
 
 The output of this is a directory in your `$PWD` named `$OEM-$DEVICE` which
 holds the skeleton generated files.
